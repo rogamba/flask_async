@@ -58,8 +58,21 @@ $> flask worker
 
 ### Asynchronize
 
-To create an asynchronous endpoint, simply import the **asynchronize** decorator from the flask_async package and pass the
-function you want to execute asynchronously. The first step would then be defininf the function you will execute asynchronously:
+First we need to import the FlaskAsync object and pass the flask application
+as a parameter:
+
+```python
+from flask import Flask
+from config import *
+from flask_async import FlaskAsync, asynchronize
+
+# Flask app declaration
+app = Flask(__name__)
+app.config.from_object('config')
+FlaskAsync(app)
+```
+
+To create an asynchronous endpoint, simply import the **asynchronize** decorator from the flask_async package and pass the function you want to execute asynchronously. The first step would then be defininf the function you will execute asynchronously:
 
 ```python
 def async_func(task_id, params):
