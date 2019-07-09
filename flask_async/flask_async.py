@@ -49,14 +49,17 @@ class FlaskAsync(object):
         app.celery_app = celery_app
 
         # Connect to redis
+        print("Connecting to redis...")
         app.redis = Redis(
-            host=self.config['REDIS_HOST'],
-            port=self.config['REDIS_PORT'],
-            password=self.config['REDIS_PASSWORD'] or None
+            host='127.0.0.1' if 'REDIS_HOST' not in self.config else self.config['REDIS_HOST'],
+            port='6379' if 'REDIS_PORT' not in self.config else self.config['REDIS_PORT'],
+            password=None if 'REDIS_PASSWORD' not in self.config else self.config['REDIS_PASSWORD'],
         )
+        print("Connected...")
 
         @celery_app.task(bind=True,serializer='pickle')
         def async_task(self, func, params):
+            print("Starting async task")
             # Fetch Task ID
             task_id = self.request.id
             logger.info('Verifying Task:'+str(task_id))

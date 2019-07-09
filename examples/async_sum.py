@@ -1,12 +1,11 @@
 # -*- coding: utf-8 -*-
 from flask import Flask, request, jsonify, g
-from config import *
 import json
-import config
 import os
 import datetime
 import time
 import logging
+import config
 try:
     # The typical way to import flask-async
     from flask_async import FlaskAsync, asynchronize  

@@ -28,13 +28,13 @@ CELERY_PORT=""
 CELERY_USER= ""
 CELERY_PASSWORD=""
 CELERY_REDIS_DB=""
+
 # Task backend
 REDIS_HOST=""
 REDIS_PORT=""
 REDIS_PASSWORD=""
 REDIS_DB=""
 ```
-
 
 ## Usage
 
@@ -124,4 +124,50 @@ def async_cancel(task_id):
     return jsonify(FlaskAsync.cancel(task_id))  
 ```
 
+## Running the example
 
+To run the example, first we need to make sure our environment variables are set up properly. 
+
+**First**: Make sure your redis server is running or you have connection to a remote one
+To check if you can connect to the redis server execute:
+```shell
+$> redis-cli -h <ip-address> PING
+```
+
+Executing this command should return a simple "PONG", otherwise you need to check your redis connection.
+
+**Second**: Export flas app environment variable so we are able to execute flask cli commands.
+```shell
+$> source examples/vars
+```
+
+**Third**: Run the celery worker that will process the asynchronous task: 
+```shell
+$> flask worker
+```
+
+**Fourth**: Run the flask app server:
+```shell
+$> flask run
+```
+
+**Fifth**: Make the request to trigger the async task:
+```shell
+$> curl -XGET http://127.0.0.1:5000/async
+```
+
+This will return a json with the task uuid, we will use the task uuid to check the task status and retrieve the response
+
+**Sixth**: Get the status of the task to check if it's still processing, completed or it failed
+```shell
+$> curl -XGET http://127.0.0.1:5000/stats/<task_uuid>
+```
+
+**Seventh**: Get the result of the task, it will be contained in the **data** property of a json response object
+```shell
+$> curl -XGET http://127.0.0.1:5000/result/<task_uuid>
+```
+
+## Contributing
+
+If you feel this extension can be improved or you have any comments or questions don't hessitate to open an issue or send me an email.
