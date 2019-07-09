@@ -18,31 +18,32 @@ $ pip install -U flask-async
 
 ### Configuration variables
 
-The following configuration variables must be added to your Flask application in order to make use of the asycnhronize decorator:
+The following configuration variables must be included in your Flask application in order to make use of the __asycnhronize__ decorator:
 
 ```python
 # Celery broker and backed
-CELERY_BROKER=""
-CELERY_HOST=""
-CELERY_PORT=""
+CELERY_BROKER="redis"
+CELERY_HOST="127.0.0.1"
+CELERY_PORT="6379"
 CELERY_USER= ""
 CELERY_PASSWORD=""
-CELERY_REDIS_DB=""
+CELERY_REDIS_DB="0"
 
 # Task backend
-REDIS_HOST=""
-REDIS_PORT=""
+REDIS_HOST="127.0.0.1"
+REDIS_PORT="6379"
 REDIS_PASSWORD=""
-REDIS_DB=""
+REDIS_DB="0"
 ```
 
 ## Usage
 
-To use the package some configuration variables need to be passed to the Flask app, as well as previously started a redis server and a celery worker.
+To use the package, some configuration variables need to be passed to the Flask app, as well as previously start a redis server and a celery worker.
 
 ### Running Redis Server
 
-If you don't know the redis configuration and setup, I highly recommend to first have a look at [https://redis.io/topics/quickstart]for documentation and tutorials. Once installed you normally start the redis server with:
+If you don't know the redis configuration and setup, I highly recommend you to first take a look at [https://redis.io/topics/quickstart] for documentation and tutorials.   
+Once installed you normally start the redis server with:
 
 ```shell
 $> redis-server
@@ -50,7 +51,7 @@ $> redis-server
 
 ### Run Celery Worker
 
-To run the celery worker inside the flask app context, simply execute the following command
+Flask async adds a cli to your flask application that enables you to run a celery workers inside the flask application context. To run the celery worker simply execute the following command:
 
 ```shell
 $> flask worker
@@ -128,15 +129,15 @@ def async_cancel(task_id):
 
 To run the example, first we need to make sure our environment variables are set up properly. 
 
-**First**: Make sure your redis server is running or you have connection to a remote one
-To check if you can connect to the redis server execute:
+**First**: Make sure your redis server is running or you have connection to a remote one.
+To check if you can connect to the redis server, execute:
 ```shell
 $> redis-cli -h <ip-address> PING
 ```
 
-Executing this command should return a simple "PONG", otherwise you need to check your redis connection.
+Executing this command should return a simple "PONG". Otherwise you need to check your redis connection.
 
-**Second**: Export flas app environment variable so we are able to execute flask cli commands.
+**Second**: Export flask app environment variable so we are able to execute flask cli commands.
 ```shell
 $> source examples/vars
 ```
